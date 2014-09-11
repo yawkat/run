@@ -23,10 +23,12 @@ commands = [
     "subl",
     "intellij",
     "gimp",
-    "inkscape"
+    "inkscape",
+    "lock"
 ]
 
 command_aliases = {
     "rhythmbox": "rhythmbox --rhythmdb-file ~/SSD/Music/rhythmbox/db --playlists-file ~/SSD/Music/rhythmbox/playlists",
-    "intellij": "~/Applications/IntelliJ/bin/idea.sh"
+    "intellij": "~/Applications/IntelliJ/bin/idea.sh",
+    "lock": "gnome-screensaver-command -l"
 }
