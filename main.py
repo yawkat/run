@@ -36,7 +36,7 @@ def key(evt):
             selected_suggestion -= 1
             update_ui()
     elif evt.keycode is 116: # down
-        if selected_suggestion < len(commands):
+        if selected_suggestion < len(commands) and selected_suggestion is not -1:
             selected_suggestion += 1
             update_ui()
     else:
@@ -74,12 +74,17 @@ def update_ui_now():
             suggestion_labels[suggestion] = label
 
     actual_selected = selected_suggestion
-    while actual_selected > 0 and not commands[actual_selected] in suggest:
-        actual_selected -= 1
-    if not commands[actual_selected] in suggest:
-        actual_selected = selected_suggestion
-        while actual_selected < len(commands) - 1 and not commands[actual_selected] in suggest:
-            actual_selected += 1
+    if len(suggest) > 0:
+        if actual_selected is -1:
+            actual_selected = 0
+        while actual_selected > 0 and not commands[actual_selected] in suggest:
+            actual_selected -= 1
+        if not commands[actual_selected] in suggest:
+            actual_selected = selected_suggestion
+            while actual_selected < len(commands) - 1 and not commands[actual_selected] in suggest:
+                actual_selected += 1
+    else:
+        actual_selected = -1
     selected_suggestion = actual_selected
 
     i = 0
