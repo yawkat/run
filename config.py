@@ -2,8 +2,8 @@
 
 width = 400
 line_height = 18
-x = 1000
-y = 0
+x = 1600 - width
+y = 18
 bg = "#073642"
 bg_highlight = "#586e75"
 fg = "#fdf6e3"
@@ -24,11 +24,13 @@ commands = [
     "intellij",
     "gimp",
     "inkscape",
-    "lock"
+    "lock",
+    "shutdown"
 ]
 
 command_aliases = {
     "rhythmbox": "rhythmbox --rhythmdb-file ~/SSD/Music/rhythmbox/db --playlists-file ~/SSD/Music/rhythmbox/playlists",
     "intellij": "~/Applications/IntelliJ/bin/idea.sh",
-    "lock": "gnome-screensaver-command -l"
+    "lock": "gnome-screensaver-command -l",
+    "shutdown": "dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop"
 }
