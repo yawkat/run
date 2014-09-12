@@ -25,12 +25,14 @@ commands = [
     "gimp",
     "inkscape",
     "lock",
-    "shutdown"
+    "shutdown",
+    "nautilus"
 ]
 
 command_aliases = {
     "rhythmbox": "rhythmbox --rhythmdb-file ~/SSD/Music/rhythmbox/db --playlists-file ~/SSD/Music/rhythmbox/playlists",
     "intellij": "~/Applications/IntelliJ/bin/idea.sh",
     "lock": "gnome-screensaver-command -l",
-    "shutdown": "dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop"
+    "shutdown": "dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop",
+    "nautilus": "nautilus --no-desktop"
 }
