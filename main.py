@@ -10,12 +10,14 @@ from config import *
 # current entered command
 command = ""
 # Label objects for suggestions
-suggestion_labels = {}
-# index of the current suggestion in config.commands
-selected_suggestion = 0
+suggestion_labels = []
+# current suggestion in config.commands
+selected_suggestion = None
+selected_suggestion_index = -1
+suggestions = ()
 
 def key(evt):
-    global command, selected_suggestion
+    global command, selected_suggestion, selected_suggestion_index, suggestions
     if evt.keycode is 9: # escape
         exit()
     elif evt.keycode is 22: # backspace
@@ -26,8 +28,8 @@ def key(evt):
             try:
                 cmd = command
                 # use suggestion if there is one
-                if selected_suggestion >= 0 and selected_suggestion < len(commands):
-                    cmd = commands[selected_suggestion]
+                if selected_suggestion is not None:
+                    cmd = selected_suggestion
                     if cmd in command_aliases:
                         cmd = command_aliases[cmd]
                 print "Running '%s'..." % cmd
@@ -38,13 +40,15 @@ def key(evt):
         exit()
     elif evt.keycode is 111: # up
         # previous suggestion
-        if selected_suggestion > 0:
-            selected_suggestion -= 1
+        if selected_suggestion_index > 0:
+            selected_suggestion_index -= 1
+            selected_suggestion = suggestions[selected_suggestion_index]
             update_ui()
     elif evt.keycode is 116: # down
         # next suggestion
-        if selected_suggestion < len(commands) and selected_suggestion is not -1:
-            selected_suggestion += 1
+        if selected_suggestion_index < len(suggestions) and selected_suggestion is not None:
+            selected_suggestion_index += 1
+            selected_suggestion = None
             update_ui()
     else:
         command += evt.char
@@ -59,12 +63,12 @@ def update_ui():
     frame.after(0, update_ui_now)
 
 def update_ui_now():
-    global command_var, suggestion_labels, selected_suggestion
+    global command_var, suggestion_labels, selected_suggestion, selected_suggestion_index, suggestions
 
     # suggestions
-    suggest = set(filter(lambda l: l.startswith(command), commands))
+    suggestions = list(filter(lambda l: l.startswith(command), commands))
 
-    if len(suggest) is 0 and command[0].startswith(expression_prefix):
+    if len(suggestions) is 0 and command[0].startswith(expression_prefix):
         # parse expression
         expression = command[len(expression_prefix):]
         result = "ERROR"
@@ -79,50 +83,38 @@ def update_ui_now():
         command_var.set(input_format % command)
 
     # resize for suggestions
-    frame.master.geometry("%sx%s+%s+%s" % (width, line_height * (1 + len(suggest)), x, y))
-
-    # make labels for new suggestions we didn't have labels for before
-    for suggestion in suggest:
-        if not suggestion in suggestion_labels:
-            label = tk.Label(frame, text=(suggestion_format % suggestion), anchor="nw", justify="left", fg=fg, bg=bg, font=font)
-            suggestion_labels[suggestion] = label
+    frame.master.geometry("%sx%s+%s+%s" % (width, line_height * (1 + len(suggestions)), x, y))
 
     # limit suggested to < len and >= 0, or -1 if no suggestions
     # also moves suggestion focus if the selected suggestion disappeared
-    actual_selected = selected_suggestion
-    if len(suggest) > 0:
-        if actual_selected is -1:
-            actual_selected = 0
-        # try to find a suggestion above the removed one first if one was removed
-        while actual_selected > 0 and not commands[actual_selected] in suggest:
-            actual_selected -= 1
-        # try below too
-        if not commands[actual_selected] in suggest:
-            actual_selected = selected_suggestion
-            while actual_selected < len(commands) - 1 and not commands[actual_selected] in suggest:
-                actual_selected += 1
+
+    try:
+        selected_suggestion_index = suggestions.index(selected_suggestion)
+    except ValueError:
+        if selected_suggestion_index < 0:
+            if len(suggestions) is 0:
+                selected_suggestion_index = -1
+            else:
+                selected_suggestion_index = 0
+        else:
+            selected_suggestion_index = min(len(suggestions) - 1, selected_suggestion_index)
+
+    if selected_suggestion_index >= 0:
+        selected_suggestion = suggestions[selected_suggestion_index]
     else:
-        # no suggestions
-        actual_selected = -1
-    selected_suggestion = actual_selected
+        selected_suggestion = None
 
     # display and pack suggestion labels
-    i = 0
-    for k in commands:
-        if not k in suggestion_labels:
-            continue
-        label = suggestion_labels[k]
-        if k in suggest:
-            # suggestion shown
-            label.pack(fill="both")
-            if i is selected_suggestion:
-                label.config(background=bg_highlight)
-            else:
-                label.config(background=bg)
+    for i in range(min(len(suggestions), len(suggestion_labels))):
+        k = suggestions[i]
+        label = suggestion_labels[i]
+        label[1].set(k)
+        # suggestion shown
+        label[0].pack(fill="both")
+        if k == selected_suggestion:
+            label[0].config(background=bg_highlight)
         else:
-            # not shown
-            label.pack_forget()
-        i += 1
+            label[0].config(background=bg)
 
 frame = tk.Frame(bg=bg)
 # xlib hacks to float above WM
@@ -136,6 +128,11 @@ frame.grid()
 command_var = tk.StringVar()
 command_label = tk.Label(frame, textvariable=command_var, anchor="nw", justify="left", fg=fg, bg=bg, font=font, width=width)
 command_label.pack(fill="x")
+
+for _ in range(20):
+    v = tk.StringVar()
+    label = tk.Label(frame, textvariable=v, anchor="nw", justify="left", fg=fg, bg=bg, font=font, width=width)
+    suggestion_labels.append((label, v))
 
 update_ui()
 
