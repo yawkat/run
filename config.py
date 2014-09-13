@@ -1,19 +1,31 @@
 #!/usr/bin/env python2
 
+# width of the launcher box
 width = 400
+# height of each launcher entry
 line_height = 18
+# location of the launcher
 x = 1600 - width
 y = 18
+# background color
 bg = "#073642"
+# background color of the selected suggestion
 bg_highlight = "#586e75"
+# text color
 fg = "#fdf6e3"
+# text font
 font = "\"Source Code Pro\" 8 bold"
 
+# format used for command display (first line)
 input_format = "> %s"
+# prefix for expressions (Typing '<expression_prefix><expression>' will be parsed as an expression)
 expression_prefix = "#"
+# expression display format
 expression_format = "# %s = %s"
+# display format for command suggestions (two spaces to pad with '> ')
 suggestion_format = "  %s"
 
+# available commands
 commands = (
     "firefox",
     "xfce4-terminal",
@@ -31,6 +43,7 @@ commands = (
     "minecraft"
 )
 
+# aliases of some commands in <commands>
 command_aliases = {
     "rhythmbox": "rhythmbox --rhythmdb-file ~/SSD/Music/rhythmbox/db --playlists-file ~/SSD/Music/rhythmbox/playlists",
     "intellij": "~/Applications/IntelliJ/bin/idea.sh",
