@@ -40,14 +40,18 @@ def key(evt):
         exit()
     elif evt.keycode is 111: # up
         # previous suggestion
-        if selected_suggestion_index > 0:
+        if len(suggestions) is not 0:
             selected_suggestion_index -= 1
+            while selected_suggestion_index < 0:
+                selected_suggestion_index += len(suggestions)
             selected_suggestion = suggestions[selected_suggestion_index]
             update_ui()
     elif evt.keycode is 116: # down
         # next suggestion
-        if selected_suggestion_index < len(suggestions) and selected_suggestion is not None:
+        if len(suggestions) is not 0:
             selected_suggestion_index += 1
+            while selected_suggestion_index >= len(suggestions):
+                selected_suggestion_index -= len(suggestions)
             selected_suggestion = None
             update_ui()
     else:
