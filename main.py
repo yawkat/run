@@ -112,7 +112,7 @@ def update_ui_now():
     for i in range(min(len(suggestions), len(suggestion_labels))):
         k = suggestions[i]
         label = suggestion_labels[i]
-        label[1].set(k)
+        label[1].set(suggestion_format % k)
         # suggestion shown
         label[0].pack(fill="both")
         if k == selected_suggestion:
