@@ -13,6 +13,8 @@ bg = "#073642"
 bg_highlight = "#586e75"
 # text color
 fg = "#fdf6e3"
+# text color
+fg_application = "#93a1a1"
 # text font
 font = "\"Source Code Pro\" 8 bold"
 

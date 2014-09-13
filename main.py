@@ -1,9 +1,11 @@
 #!/usr/bin/env python2
 
 import Tkinter as tk
+import os
 import sys
 import subprocess
 import traceback
+import threading
 
 from config import *
 
@@ -15,6 +17,34 @@ suggestion_labels = []
 selected_suggestion = None
 selected_suggestion_index = -1
 suggestions = ()
+
+TYP_CUSTOM = 0
+TYP_APPLICATION = 1
+
+class Command():
+    def __init__(self, name, typ=TYP_CUSTOM, command=None):
+        if command is None:
+            command = name
+        self.name = name
+        self.command = command
+        self.typ = typ
+
+command_objects = list(map(lambda x: Command(x, command=command_aliases.get(x, x)), commands))
+command_names = set(map(lambda c: c.name, command_objects))
+
+def scan_installed():
+    for folder in os.getenv("PATH").split(":"):
+        try:
+            for f in os.listdir(folder):
+                if f not in command_names:
+                    command_names.add(f)
+                    command_objects.append(Command(f, typ=TYP_APPLICATION))
+        except:
+            pass
+
+scanner = threading.Thread(target=scan_installed)
+scanner.daemon = True
+scanner.start()
 
 def key(evt):
     global command, selected_suggestion, selected_suggestion_index, suggestions
@@ -29,9 +59,7 @@ def key(evt):
                 cmd = command
                 # use suggestion if there is one
                 if selected_suggestion is not None:
-                    cmd = selected_suggestion
-                    if cmd in command_aliases:
-                        cmd = command_aliases[cmd]
+                    cmd = selected_suggestion.command
                 print "Running '%s'..." % cmd
                 # run
                 subprocess.Popen(cmd, shell=True)
@@ -70,7 +98,7 @@ def update_ui_now():
     global command_var, suggestion_labels, selected_suggestion, selected_suggestion_index, suggestions
 
     # suggestions
-    suggestions = list(filter(lambda l: l.startswith(command), commands))
+    suggestions = list(filter(lambda l: l.name.startswith(command), command_objects))[:len(suggestion_labels)]
 
     if len(suggestions) is 0 and command[0].startswith(expression_prefix):
         # parse expression
@@ -109,16 +137,20 @@ def update_ui_now():
         selected_suggestion = None
 
     # display and pack suggestion labels
-    for i in range(min(len(suggestions), len(suggestion_labels))):
-        k = suggestions[i]
+    for i in range(len(suggestions)):
+        suggestion = suggestions[i]
         label = suggestion_labels[i]
-        label[1].set(suggestion_format % k)
+        label[1].set(suggestion_format % suggestion.name)
         # suggestion shown
         label[0].pack(fill="both")
-        if k == selected_suggestion:
+        if suggestion == selected_suggestion:
             label[0].config(background=bg_highlight)
         else:
             label[0].config(background=bg)
+        if suggestion.typ == TYP_CUSTOM:
+            label[0].config(foreground=fg)
+        else:
+            label[0].config(foreground=fg_application)
 
 frame = tk.Frame(bg=bg)
 # xlib hacks to float above WM
