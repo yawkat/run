@@ -14,7 +14,7 @@ expression_prefix = "#"
 expression_format = "# %s = %s"
 suggestion_format = "  %s"
 
-commands = [
+commands = (
     "firefox",
     "xfce4-terminal",
     "rhythmbox",
@@ -26,13 +26,16 @@ commands = [
     "inkscape",
     "lock",
     "shutdown",
-    "nautilus"
-]
+    "nautilus",
+    "deluge",
+    "minecraft"
+)
 
 command_aliases = {
     "rhythmbox": "rhythmbox --rhythmdb-file ~/SSD/Music/rhythmbox/db --playlists-file ~/SSD/Music/rhythmbox/playlists",
     "intellij": "~/Applications/IntelliJ/bin/idea.sh",
     "lock": "gnome-screensaver-command -l",
     "shutdown": "dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop",
-    "nautilus": "nautilus --no-desktop"
+    "nautilus": "nautilus --no-desktop",
+    "minecraft": "java -jar ~/Downloads/jar/MagicLauncher_1.2.5.jar"
 }
