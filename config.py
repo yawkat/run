@@ -1,14 +1,21 @@
 #!/usr/bin/env python2
 
+import sys
+
 # width of the launcher box
 width = 400
 # height of each launcher entry
 line_height = 18
+
+if len(sys.argv) > 1:
+    screen_width = int(sys.argv[1])
+else:
+    screen_width = 1600
 # location of the launcher
-x = 1600 - width
+x = screen_width - width
 y = 18
 # background color
-bg = "#073642"
+bg = "#002b36"
 # background color of the selected suggestion
 bg_highlight = "#586e75"
 # text color
