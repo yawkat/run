@@ -40,6 +40,7 @@ commands = (
     "inkscape",
     "lock",
     "shutdown",
+    "standby",
     "nautilus",
     "deluge",
     "minecraft"
@@ -51,6 +52,7 @@ command_aliases = {
     "intellij": "~/Applications/IntelliJ/bin/idea.sh",
     "lock": "gnome-screensaver-command -l",
     "shutdown": "dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop",
+    "standby": "dbus-send --system --print-reply --dest=org.freedesktop.UPower /org/freedesktop/UPower org.freedesktop.UPower.Suspend",
     "nautilus": "nautilus --no-desktop",
     "minecraft": "java -jar ~/Downloads/jar/MagicLauncher_1.2.5.jar"
 }
