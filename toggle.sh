@@ -8,5 +8,5 @@ if [[ -f "$dir/pid" ]]; then
     fi
 fi
 
-"$dir/main.py" &
+"$dir/main.py" $@ &
 echo $! > "$dir/pid"
