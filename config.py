@@ -55,7 +55,6 @@ commands = (
 
 # aliases of some commands in <commands>
 command_aliases = {
-    "rhythmbox": "rhythmbox --rhythmdb-file ~/SSD/Music/rhythmbox/db --playlists-file ~/SSD/Music/rhythmbox/playlists",
     "intellij": "~/Applications/IntelliJ/bin/idea.sh",
     "lock": "gnome-screensaver-command -l",
     "shutdown": "dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop",
