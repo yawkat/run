@@ -30,17 +30,20 @@ class Command():
         self.typ = typ
 
 command_objects = list(map(lambda x: Command(x, command=command_aliases.get(x, x)), commands))
-command_names = set(map(lambda c: c.name, command_objects))
 
 def scan_installed():
+    command_names = set(map(lambda c: c.name, command_objects))
+    scanned = {}
     for folder in os.getenv("PATH").split(":"):
         try:
             for f in os.listdir(folder):
                 if f not in command_names:
                     command_names.add(f)
-                    command_objects.append(Command(f, typ=TYP_APPLICATION))
+                    scanned[f] = Command(f, typ=TYP_APPLICATION)
         except:
             pass
+    for f in sorted(scanned):
+        command_objects.append(scanned[f])
 
 scanner = threading.Thread(target=scan_installed)
 scanner.daemon = True
