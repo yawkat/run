@@ -56,7 +56,7 @@ commands = (
 # aliases of some commands in <commands>
 command_aliases = {
     "intellij": "~/Applications/IntelliJ/bin/idea.sh",
-    "lock": "gnome-screensaver-command -l",
+    "lock": "gnome-screensaver-command -l && xset dpms force off",
     "shutdown": "dbus-send --system --print-reply --dest=org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop",
     "standby": "dbus-send --system --print-reply --dest=org.freedesktop.UPower /org/freedesktop/UPower org.freedesktop.UPower.Suspend",
     "nautilus": "nautilus --no-desktop",
