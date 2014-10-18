@@ -57,17 +57,16 @@ def key(evt):
         command = command[0:-1] # remove last char
         update_ui()
     elif evt.keycode is 36: # enter
-        if command != "":
-            try:
-                cmd = command
-                # use suggestion if there is one
-                if selected_suggestion is not None:
-                    cmd = selected_suggestion.command
-                print "Running '%s'..." % cmd
-                # run
-                subprocess.Popen(cmd, shell=True)
-            except:
-                traceback.print_exc()
+        try:
+            cmd = command
+            # use suggestion if there is one
+            if selected_suggestion is not None:
+                cmd = selected_suggestion.command
+            print "Running '%s'..." % cmd
+            # run
+            subprocess.Popen(cmd, shell=True)
+        except:
+            traceback.print_exc()
         exit()
     elif evt.keycode is 111: # up
         # previous suggestion
