@@ -28,7 +28,9 @@ commands = (
     "hibernate",
     "nautilus",
     "deluge",
-    "minecraft"
+    "minecraft",
+    "hostup",
+    "hostdown"
 )
 
 # aliases of some commands in <commands>
@@ -39,5 +41,7 @@ command_aliases = {
     "standby": "dbus-send --system --print-reply --dest=org.freedesktop.UPower /org/freedesktop/UPower org.freedesktop.UPower.Suspend",
     "hibernate": "dbus-send --system --print-reply --dest=org.freedesktop.UPower /org/freedesktop/UPower org.freedesktop.UPower.Hibernate",
     "nautilus": "nautilus --no-desktop",
-    "minecraft": "java -jar ~/Downloads/jar/MagicLauncher_1.2.5.jar"
+    "minecraft": "java -jar ~/Downloads/jar/MagicLauncher_1.2.5.jar",
+    "hostup": "/etc/hosts.sh on",
+    "hostdown": "/etc/hosts.sh off",
 }
