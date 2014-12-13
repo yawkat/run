@@ -20,6 +20,8 @@ commands = (
     "quasselclient",
     "subl",
     "intellij",
+    "genpw16",
+    "genpw32",
     "gimp",
     "inkscape",
     "lock",
@@ -30,7 +32,7 @@ commands = (
     "deluge",
     "minecraft",
     "hostup",
-    "hostdown"
+    "hostdown",
 )
 
 # aliases of some commands in <commands>
@@ -44,4 +46,6 @@ command_aliases = {
     "minecraft": "java -jar ~/Downloads/jar/MagicLauncher_1.2.5.jar",
     "hostup": "/etc/hosts.sh on",
     "hostdown": "/etc/hosts.sh off",
+    "genpw16": "< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-16} | xclip -selection c",
+    "genpw32": "< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-16} | xclip -selection c",
 }
